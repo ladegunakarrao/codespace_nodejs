@@ -1,0 +1,40 @@
+import unittest
+from coffee_maker import CoffeeMaker
+
+class TestCoffeeMaker(unittest.TestCase):
+    def setUp(self):
+        # Initialize a CoffeeMaker object for testing
+        self.coffee_maker = CoffeeMaker()
+
+    def test_make_coffee(self):
+        # Test making coffee when there are enough resources
+        self.coffee_maker.refill()
+        self.assertTrue(self.coffee_maker.make_coffee("espresso"))
+
+    def test_make_coffee_insufficient_resources(self):
+        # Test making coffee when there are insufficient resources
+        self.assertFalse(self.coffee_maker.make_coffee("latte"))
+
+    def test_refill(self):
+        # Test refilling the coffee maker
+        initial_amount = self.coffee_maker.resources["water"]
+        self.coffee_maker.refill()
+        self.assertNotEqual(initial_amount, self.coffee_maker.resources["water"])
+
+    def test_add_resource(self):
+        # Test adding a resource to the coffee maker
+        initial_amount = self.coffee_maker.resources["coffee_beans"]
+        self.coffee_maker.add_resource("coffee_beans", 100)
+        self.assertEqual(initial_amount + 100, self.coffee_maker.resources["coffee_beans"])
+
+    def test_check_resources_sufficient(self):
+        # Test checking if there are sufficient resources for making coffee
+        self.coffee_maker.refill()
+        self.assertTrue(self.coffee_maker.check_resources_sufficient("espresso"))
+
+    def test_check_resources_insufficient(self):
+        # Test checking if there are insufficient resources for making coffee
+        self.assertFalse(self.coffee_maker.check_resources_sufficient("latte"))
+
+if __name__ == '__main__':
+    unittest.main()
